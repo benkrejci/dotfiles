@@ -1,8 +1,7 @@
 #!/bin/sh
 
 export DEBIAN_FRONTEND=noninteractive
-export INSTALL_ZSH=true
-export USERNAME=`whoami`
+export USERNAME=`vscode`
 
 ## update and install required packages
 sudo apt-get update
@@ -17,24 +16,16 @@ sudo apt-get install -y \
   unzip \
   lsb-release \
   vim
+  fonts-powerline \
+  zsh
 
-# Install & Configure Zsh
-if [ "$INSTALL_ZSH" = "true" ]
-then
-    sudo apt-get install -y \
-    fonts-powerline \
-    zsh
+wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git
+echo "source $PWD/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ${ZDOTDIR:-$HOME}/.zshrc
 
-    cp -f ~/dotfiles/.zshrc ~/.zshrc
-    chsh -s /usr/bin/zsh $USERNAME
-    wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh
-    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git
-    echo "source $PWD/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ${ZDOTDIR:-$HOME}/.zshrc
-fi
 
 # Cleanup
 sudo apt-get autoremove -y
 sudo apt-get autoremove -y
-sudo rm -rf /var/lib/apt/lists/*
 
