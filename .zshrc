@@ -127,7 +127,7 @@ export AWS_SECRET_ACCESS_KEY="9GhXGVXxp1Mmy3X4yKNfNmbq+tPNqlThRjfaSHc9"
 export PATH=$PATH:/Users/krejci/node_modules/.bin
 
 #export PATH="$HOME/.pyenv/bin:$PATH"
-export PATH="/usr/local/bin:$PATH"
+#export PATH="/usr/local/bin:$PATH"
 
 if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init -)"
