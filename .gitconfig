@@ -1,0 +1,7 @@
+[user]
+	name = ⚡Ben Krejci ⚡
+	email = krejci@duolingo.com
+[init]
+	templateDir = /Users/krejci/.git-template
+[core]
+	excludesFile = /Users/krejci/.gitignore
