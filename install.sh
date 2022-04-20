@@ -1,37 +1,55 @@
 #!/bin/sh
 
-zshrc() {
-    echo "==========================================================="
-    echo "             cloning zsh-autosuggestions                   "
-    echo "-----------------------------------------------------------"
+export DEBIAN_FRONTEND=noninteractive
+export INSTALL_ZSH=true
+export USERNAME=`whoami`
+
+## update and install required packages
+sudo apt-get update
+sudo apt-get -y install --no-install-recommends apt-utils dialog 2>&1
+sudo apt-get install -y \
+  curl \
+  git \
+  gnupg2 \
+  jq \
+  sudo \
+  openssh-client \
+  less \
+  iproute2 \
+  procps \
+  wget \
+  unzip \
+  apt-transport-https \
+  lsb-release 
+
+# Install Azure CLI
+# echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $(lsb_release -cs) main" | sudo tee -a /etc/apt/sources.list.d/azure-cli.list
+# curl -sL https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add - 2>/dev/null
+# sudo apt-get update
+# sudo apt-get install -y azure-cli;
+
+# Install Jetbrains Mono font
+wget https://download.jetbrains.com/fonts/JetBrainsMono-2.001.zip
+sudo unzip JetBrainsMono-2.001.zip -d /usr/share/fonts
+sudo fc-cache -f -v
+
+# Install & Configure Zsh
+if [ "$INSTALL_ZSH" = "true" ]
+then
+    sudo apt-get install -y \
+    fonts-powerline \
+    zsh
+
+    cp -f ~/dotfiles/.zshrc ~/.zshrc
+    chsh -s /usr/bin/zsh $USERNAME
+    wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh
     git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-    echo "==========================================================="
-    echo "             cloning zsh-syntax-highlighting               "
-    echo "-----------------------------------------------------------"
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-    echo "==========================================================="
-    echo "             cloning powerlevel10k                         "
-    echo "-----------------------------------------------------------"
-    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
-    echo "==========================================================="
-    echo "             import zshrc                                  "
-    echo "-----------------------------------------------------------"
-    cat .zshrc > $HOME/.zshrc
-    echo "==========================================================="
-    echo "             import powerlevel10k                          "
-    echo "-----------------------------------------------------------"
-    cat .p10k.zsh > $HOME/.p10k.zsh
-}
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git
+    echo "source $PWD/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ${ZDOTDIR:-$HOME}/.zshrc
+fi
 
-# change time zone
-sudo ln -fs /usr/share/zoneinfo/America/Chicago /etc/localtime
-sudo dpkg-reconfigure --frontend noninteractive tzdata
+# Cleanup
+sudo apt-get autoremove -y
+sudo apt-get autoremove -y
+sudo rm -rf /var/lib/apt/lists/*
 
-zshrc
-
-# make directly highlighting readable - needs to be after zshrc line
-echo "" >> ~/.zshrc
-echo "# remove ls and directory completion highlight color" >> ~/.zshrc
-echo "_ls_colors=':ow=01;33'" >> ~/.zshrc
-echo 'zstyle ":completion:*:default" list-colors "${(s.:.)_ls_colors}"' >> ~/.zshrc
-echo 'LS_COLORS+=$_ls_colors' >> ~/.zshrc
