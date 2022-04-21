@@ -115,6 +115,9 @@ source $ZSH/oh-my-zsh.sh
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+# Set colors for LS_COLORS.
+eval `dircolors ~/.dircolors`
+
 export PATH="$HOME/.nodenv/bin:$PATH"
 eval "$(nodenv init -)"
 
