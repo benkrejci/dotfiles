@@ -15,7 +15,8 @@ sudo apt-get install -y \
   wget \
   unzip \
   lsb-release \
-  vim
+  vim \
+  powerline \
   fonts-powerline \
   zsh
 
