@@ -20,7 +20,7 @@ sudo apt-get install -y \
   fonts-powerline \
   zsh
 
-npm i -g yarn
+sudo npm i -g yarn
 
 curl -fsSL https://raw.githubusercontent.com/nodenv/nodenv-installer/master/bin/nodenv-installer | bash
 wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh
